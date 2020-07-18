@@ -79,13 +79,12 @@ all_data_merged$activity <- activity_labels[all_data_merged$activity, 2]
 #copy list of all variables for modification 
 readble_cols_names <- all_features
 
-#modifications
+#name columns modifications for more descriptive names
 readble_cols_names <- gsub("\\(\\)", "", readble_cols_names)
 readble_cols_names <- gsub("Acc", "-acceleration", readble_cols_names)
 readble_cols_names <- gsub("Mag", "-Magnitude", readble_cols_names)
 readble_cols_names <- gsub("(Jerk|Gyro)", "-\\1", readble_cols_names)
 readble_cols_names <- gsub("BodyBody", "Body", readble_cols_names)
-readble_cols_names <- gsub("Acc", "Accelerometer", readble_cols_names)
 readble_cols_names <- gsub("Gyro", "Gyroscope", readble_cols_names)
 readble_cols_names <- gsub("BodyBody", "Body", readble_cols_names)
 readble_cols_names <- gsub("^t", "Time", readble_cols_names)
@@ -97,14 +96,15 @@ readble_cols_names <- gsub("angle", "Angle", readble_cols_names)
 names(all_data_merged) <- readble_cols_names
 
 
-########## 5. From the data set in step 4, creates a second, independent tidy data set with the ########## 
-##########  average of each variable for each activity and each subject. ########## 
+########## 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject. ########## 
 
 
+#Aggragate data 
 tidy_data<-aggregate(. ~ subject + activity, all_data_merged, mean)
-
 tidy_data<-tidyData[order(tidyData$subject,tidyData$activity),]
 
+
+#Saving tidy dataset 
 write.table(tidyData, file="tidy_data.txt", row.name=FALSE)
 
 head(tidyData)
